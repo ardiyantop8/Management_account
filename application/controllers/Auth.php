@@ -12,11 +12,11 @@ class Auth extends CI_Controller {
 	public function index()
 	{     
 		// ini untuk session gak boleh akses login kembali
-		if ($this->session->userdata('nik')){
+		if ($this->session->userdata('username')){
 			redirect('user');
 		}
 
-		$this->form_validation->set_rules('nik','Nik','trim|required');
+		$this->form_validation->set_rules('username','Username','trim|required');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');
 
 		if($this->form_validation->run() == false){
@@ -34,10 +34,10 @@ class Auth extends CI_Controller {
 
 	private function _login()
 	{
-		$nik = $this->input->post('nik');
+		$username = $this->input->post('username');
 		$password = $this->input->post('password');
 
-		$user = $this->db->get_where('user',['nik' => $nik])->row_array();
+		$user = $this->db->get_where('user',['username' => $username])->row_array();
 		
 		//usernya ada
 		if($user) {
@@ -46,29 +46,29 @@ class Auth extends CI_Controller {
 				//cek passwordnya
 				if(password_verify($password, $user['password'])){
 					$data = [
-						'nik' 	=> $user['nik'],
+						'username' 	=> $user['username'],
 						'role_id'	=> $user['role_id']
 					];
 					$this->session->set_userdata($data);
-					if ($user['role_id'] ==1) {
-						redirect('admin');	
-					} else if ($user['role_id'] ==2) {
-						redirect('calon');	
+					if ($user['role_id'] == 1) {
+						redirect('Admin');	
+					} else if ($user['role_id'] == 2) {
+						redirect('Maker');	
 					} else {
 						redirect('pemilih');
 					}
 					
 				} else {
 					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Wrong password </div>');
-					redirect('auth');
+					redirect('Auth');
 				}
 			} else {
-				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> NIK is not active </div>');
-					redirect('auth');
+				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Username is not active </div>');
+					redirect('Auth');
 			}
 		} else {
-			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> NIK is not registered </div>');
-			redirect('auth');
+			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Username is not registered </div>');
+			redirect('Auth');
 		}
 	}
 
@@ -77,9 +77,9 @@ class Auth extends CI_Controller {
 		$this->form_validation->set_rules('name','Name', 'required',[
 			'required'			=>'Nama lengkap harus diisi'
 		]);
-		$this->form_validation->set_rules('nik','Nik', 'required|trim|is_unique[user.nik]',[
-			'is_unique'			=> 'NIK sudah terdaftar',
-			'required'			=> 'NIK harus diisi',
+		$this->form_validation->set_rules('username','Username', 'required|trim|is_unique[user.username]',[
+			'is_unique'			=> 'Username sudah terdaftar',
+			'required'			=> 'Username harus diisi',
 			'trim'				=> 'Spcae tidak diperbolehkan'
 		]);
 		$this->form_validation->set_rules('email','Email', 'required|trim|valid_email|is_unique[user.email]',[
@@ -98,7 +98,7 @@ class Auth extends CI_Controller {
 				'trim'			=> 'Space tidak diperbolehkan'
 		]);
 		$this->form_validation->set_rules('password2','Password','required|trim|matches[password1]');
-		$data['user'] = $this->db->get_where('user',['nik' => $this->session->userdata('nik')])->row_array();
+		$data['user'] = $this->db->get_where('user',['username' => $this->session->userdata('username')])->row_array();
 		if($this->form_validation->run() == false){
 			$data['title'] = 'Form Registration';
 			$this->load->view('template/header', $data);
@@ -108,7 +108,7 @@ class Auth extends CI_Controller {
 			$this->load->view('template/footer');	
 		} else{
 			$data = [
-				'nik'			=> htmlspecialchars($this->input->post('nik', true)),
+				'username'		=> htmlspecialchars($this->input->post('username', true)),
 				'name' 			=> htmlspecialchars($this->input->post('name', true)),
 				'email' 		=> htmlspecialchars($this->input->post('email', true)),
 				'image' 		=> 'default.jpg',
@@ -120,18 +120,18 @@ class Auth extends CI_Controller {
 
 			$this->db->insert('user', $data);
 			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Selamat data user telah ditambahkan. </div>');
-			redirect('auth/registration');
+			redirect('Auth/registration');
 		}
 		
 	}
 
 	public function logout()
 	{
-		$this->session->unset_userdata('nik');
+		$this->session->unset_userdata('username');
 		$this->session->unset_userdata('role_id');
 
 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> You have been logged out </div>');
-			redirect('auth');
+			redirect('Auth');
 	}
 
 	public function blocked()

@@ -12,7 +12,7 @@ class User extends CI_Controller {
 	public function index()
 	{
 		$data['title'] = 'My Profil';
-		$data['user'] = $this->db->get_where('user',['nik' => $this->session->userdata('nik')])->row_array();
+		$data['user'] = $this->db->get_where('user',['username' => $this->session->userdata('username')])->row_array();
 		
 		
 		$this->load->view('template/header', $data);
@@ -24,7 +24,7 @@ class User extends CI_Controller {
 	public function edit()
 	{
 		$data['title'] = 'Edit Profil';
-		$data['user'] = $this->db->get_where('user',['nik' => $this->session->userdata('nik')])->row_array();
+		$data['user'] = $this->db->get_where('user',['username' => $this->session->userdata('username')])->row_array();
 
 		$this->form_validation->set_rules('name', 'Full name', 'required');
 
@@ -77,7 +77,7 @@ class User extends CI_Controller {
 	public function changepassword()
 	{
 		$data['title'] = 'Ganti Password';
-		$data['user'] = $this->db->get_where('user',['nik' => $this->session->userdata('nik')])->row_array();
+		$data['user'] = $this->db->get_where('user',['username' => $this->session->userdata('username')])->row_array();
 
 			$this->form_validation->set_rules('current_password', 'Current password', 'required|trim');
 			$this->form_validation->set_rules('new_password1', 'New password', 'required|trim|min_length[3]|matches[new_password2]',[

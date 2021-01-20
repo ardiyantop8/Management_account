@@ -6,7 +6,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-fw fa-euro-sign"></i>
         </div>
-        <div class="sidebar-brand-text">Voting <sup>RT05</sup></div>
+        <div class="sidebar-brand-text">Account <sup>Private</sup></div>
       </a>
 
       <!-- Divider -->

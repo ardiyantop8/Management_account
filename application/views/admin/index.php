@@ -15,8 +15,8 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Data Pemilih</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $datapemilih;  ?></div>
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Data Pengguna</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $datapengguna;  ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-user-friends fa-2x text-gray-300"></i>
@@ -136,7 +136,7 @@
 
                 </div>
                   <div class="col mr-2">
-                    <a href="<?= base_url('menu/menupublik')  ;?>" class="small-box-footer">Ayo Lihat <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="<?= base_url('Admin/register')  ;?>" class="small-box-footer">Ayo Lihat <i class="fa fa-arrow-circle-right"></i></a>
                   </div>
               </div>
             </div>
